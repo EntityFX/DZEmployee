@@ -1,0 +1,12 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 20px;
+}
+
+.list-panel {
+    padding: 0 0 20px 0;
+}
+
+.table .rem-row {
+    width:58px;
+}
