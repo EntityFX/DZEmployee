@@ -2,38 +2,20 @@
 
 namespace app\controllers;
 
+use app\businessLogic\implementation\RatesManager;
 use Yii;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\businessLogic\contracts\Employee;
+use app\businessLogic\contracts\EmployeeManagerInterface;
+use app\businessLogic\implementation\EmployeeManager;
 
 class SiteController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
     public function actions()
     {
         return [
@@ -49,33 +31,42 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $employeeManager = new EmployeeManager();
+        $ratesManager = new RatesManager();
+        $employeeData = $employeeManager->getAll();
+
+        $employeeDataProvider = new ArrayDataProvider(([
+            'allModels' => iterator_to_array($employeeData)
+        ]));
+        
+        return $this->render(
+            'index',
+            [
+                'model' => $employeeDataProvider,
+                'rates' => $ratesManager->getAll()
+            ]
+        );
     }
 
-    public function actionLogin()
+    public function actionEdit()
     {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
+        //TODO: Not implemented
+        return "Not implemented";
     }
 
-    public function actionLogout()
+    public function actionDelete()
     {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
+        //TODO: Not implemented
+        return "Not implemented";
     }
 
-    public function actionContact()
+    public function actionAdd()
+    {
+        //TODO: Not implemented
+        return "Not implemented";
+    }
+
+    /*public function actionContact()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
@@ -87,10 +78,6 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
-    }
+    }*/
 
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }

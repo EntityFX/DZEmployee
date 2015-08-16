@@ -1,51 +1,75 @@
 <?php
 /* @var $this yii\web\View */
-$this->title = 'My Yii Application';
+use app\models\EmployeeHelper;
+use yii\grid\GridView;
+use yii\helpers\Html;
 ?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
+<section class="list">
+    <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">List of Employee</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row list-panel">
+                            <div class="col-sm-12">
+                                <?= Html::a(
+                                    '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add Employee',
+                                    ['site/add'],
+                                    [
+                                        'title' => "Add an new employee",
+                                        'class' => "btn btn-primary btn-lg"
+                                    ]
+                                ) ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <?= GridView::widget([
+                                    'dataProvider' => $model,
+                                    'columns' => [
+                                        [
+                                            'label' => 'ID',
+                                            'format' => 'raw',
+                                            'value' => function ($item) {
+                                                return Html::a(
+                                                    $item->id,
+                                                    ['site/edit', 'id' => $item->id],
+                                                    ['title' => "Edit employee {$item->id}"]);
+                                            }
+                                        ],
+                                        'name',
+                                        'age',
+                                        'email',
+                                        [
+                                            'label' => 'Gender',
+                                            'format' => 'raw',
+                                            'value' => function ($item) {
+                                                return EmployeeHelper::genderString($item->gender);
+                                            }
+                                        ],
+                                        [
+                                            'label' => 'Rate',
+                                            'format' => 'raw',
+                                            'value' => function ($item) use ($rates) {
+                                                return EmployeeHelper::rate($rates, $item->rate);
+                                            }
+                                        ],
+                                        [
+                                            'class' => 'yii\grid\ActionColumn',
+                                            'header'=>'Action',
+                                            'headerOptions' => ['width' => '80'],
+                                            'template' => '{delete}',
+                                        ],
+                                    ],
+                                ]) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
+</section>

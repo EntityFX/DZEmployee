@@ -1,0 +1,8 @@
+CREATE TABLE `DZEmployee`.`Employee` (
+  `id` INT UNSIGNED NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `age` TINYINT(3) UNSIGNED NOT NULL,
+  `gender` TINYINT(1) UNSIGNED NOT NULL,
+  `rate` TINYINT(3) UNSIGNED NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`));

@@ -1,0 +1,1 @@
+INSERT INTO DZEmployee.Employee VALUES (0, 'Chris Redfield', 28, 1, 5, 'chris.redfield@racoon.com');
